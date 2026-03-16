@@ -5,9 +5,8 @@ DATA_FILE ?= data/drug200.csv
 # Install Python dependencies used by training, evaluation, and deployment.
 install:
 	# TODO: upgrade pip and install dependencies from requirements.txt
-	echo "TODO: implement install target"
-	python -m pip install --upgrade pip
-	pip install -r requirements.txt
+    pip install --upgrade pip &&\
+        pip install -r requirements.txt
 
 # Auto-format Python files in the repository root.
 format:
