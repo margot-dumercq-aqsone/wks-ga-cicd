@@ -16,24 +16,32 @@ jobs:
     # - PYTHON_VERSION set to a stable version (example: "3.11")
     # - HF_DATASET_URL from repository variable `vars.HF_DATASET_URL`
     # - HF_TOKEN from repository secret `secrets.HF_TOKEN`
+    env :
+      PYTHON_VERSION: '3.11'
+      HF_DATASET_URL: ${{vars.HF_DATASET_URL}}
+      HF_TOKEN: ${{secrets.HF_TOKEN}}
     steps:
       ### 
       - uses: actions/checkout@v3
 
       # TODO 2: configure Python using actions/setup-python.
       # Use `python-version: ${{ env.PYTHON_VERSION }}`
-      #
+      - uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
 
       # TODO 3: import also setup-cml with: vega: false
       # and setup-dvc with no extra configuration
       # and then complete the Makefile with the right commands 
       # to generate a CML report and comment the PR with it
       #
+      - uses: iterative/setup-cml@v1
+      - uses: iterative/setup-dvc@v1
   
       - name: Install Packages
         run: make install
       # TODO 4: complete the step in Makefile
-     - name: Train with DVC import
+      - name: Train with DVC import
         run: make train_dvc
 
       # TODO 5: add one step before report to print DVC status in logs.

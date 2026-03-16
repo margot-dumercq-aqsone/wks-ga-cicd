@@ -5,7 +5,9 @@ DATA_FILE ?= data/drug200.csv
 # Install Python dependencies used by training, evaluation, and deployment.
 install:
 	# TODO: upgrade pip and install dependencies from requirements.txt
-	@echo "TODO: implement install target"
+	echo "TODO: implement install target"
+	python -m pip install --upgrade pip
+	pip install -r requirements.txt
 
 # Auto-format Python files in the repository root.
 format:
@@ -14,24 +16,31 @@ format:
 # Train the model and write artifacts under ./model and ./results.
 train:
 	# TODO: reproduce the DVC pipeline
-	@echo "TODO: implement train target"
+	echo "TODO: implement train target"
+	python train.py
 
 # Minimal DVC + HF flow for class exercises.
 # This repo uses `dvc import` from Hugging Face (no writable DVC remote required).
 setup_dvc_hf:
-	@echo "Using DVC import workflow from Hugging Face (no remote token setup needed)."
+	echo "Using DVC import workflow from Hugging Face (no remote token setup needed)."
 
 # Pull imported dataset metadata/content and run training.
 train_dvc: setup_dvc_hf
 	# TODO: pull the dataset tracked by DVC
 	# TODO: run the training pipeline through DVC
-	@echo "TODO: implement train_dvc target"
+	echo "TODO: implement train_dvc target"
+	dvc pull data
+	python train.py
 
 # Simple CML report for students: metrics, figure, and DVC status.
 eval_cml_and_dvc:
-	# TODO: create report.md with metrics, image, and DVC status
-	# TODO: publish the report as a PR comment using CML
-	@echo "TODO: implement eval_cml_and_dvc target"
+    echo "## Model Metrics" > report.md
+    cat ./results/metrics.txt >> report.md
+    echo "\n## Confusion Matrix Plot" >> report.md
+    echo '![Confusion Matrix](./results/model_results.png)' >> report.md
+    echo "\n## Data Version (DVC)" >> report.md
+    dvc status -c >> report.md 2>&1 || echo "DVC status unavailable" >> report.md
+    cml comment create report.md
 
 # Authenticate Hugging Face CLI with token passed as HF=<token>.
 hf-login:
