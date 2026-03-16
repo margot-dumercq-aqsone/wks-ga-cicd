@@ -18,8 +18,7 @@ jobs:
     # - HF_TOKEN from repository secret `secrets.HF_TOKEN`
     env :
       PYTHON_VERSION: '3.11'
-      HF_DATASET_URL: ${{vars.HF_DATASET_URL}}
-      HF_TOKEN: ${{secrets.HF_TOKEN}}
+
     steps:
       ### 
       - uses: actions/checkout@v3
